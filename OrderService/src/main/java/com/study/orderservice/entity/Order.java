@@ -15,8 +15,9 @@ import lombok.*;
 public class Order {
     @Id
     private String orderId;
-    private String userID;
+    private String userId;
     private String addressId;
     private String productId;
     private Integer quantity;
+    private String orderStatus;
 }

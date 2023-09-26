@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class OrderRestModel {
     private String orderId;
-    private String userID;
+    private String userId;
     private String addressId;
     private String productId;
     private Integer quantity;
