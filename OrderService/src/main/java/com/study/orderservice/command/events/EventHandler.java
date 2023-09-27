@@ -1,5 +1,6 @@
 package com.study.orderservice.command.events;
 
+import com.study.CommonService.events.OrderCompletedEvent;
 import com.study.orderservice.entity.Order;
 import com.study.orderservice.entity.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,12 @@ public class EventHandler {
         Order order = new Order();
         BeanUtils.copyProperties(event,order);
         orderRepository.save(order);
+    }
+
+    @org.axonframework.eventhandling.EventHandler
+    public void on (OrderCompletedEvent event){
+        Order order = orderRepository.findById(event.getOrderId()).get();
+            order.setOrderStatus(event.getOrderStatus());
+            orderRepository.save(order);
     }
 }

@@ -3,7 +3,6 @@ package com.study.orderservice.command.controller;
 import com.study.orderservice.command.commands.CreateOrderCommand;
 import com.study.orderservice.command.model.OrderRestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +24,13 @@ public class OrderCommandController {
     public String makeOrder( @RequestBody OrderRestModel orderRestModel){
         CreateOrderCommand createOrderCommand = CreateOrderCommand.builder()
                 .orderId(UUID.randomUUID().toString())
-                .userID(orderRestModel.getUserID())
+                .userId(orderRestModel.getUserId())
                 .addressId(orderRestModel.getAddressId())
                 .quantity(orderRestModel.getQuantity())
                 .productId(orderRestModel.getProductId())
                 .orderStatus("CREATED")
                 .build();
+
         commandGateway.sendAndWait(createOrderCommand);
         return "Order Created";
     }

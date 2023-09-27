@@ -1,5 +1,7 @@
 package com.study.orderservice.command.aggregate;
 
+import com.study.CommonService.commands.CompleteOrderCommand;
+import com.study.CommonService.events.OrderCompletedEvent;
 import com.study.orderservice.command.commands.CreateOrderCommand;
 import com.study.orderservice.command.events.OrderCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
@@ -14,7 +16,7 @@ public class OrderAggregate {
 
     @AggregateIdentifier
     private String orderId;
-    private String userID;
+    private String userId;
     private String addressId;
     private String productId;
     private Integer quantity;
@@ -36,9 +38,24 @@ public class OrderAggregate {
         this.orderId=event.getOrderId();
         this.orderStatus = event.getOrderStatus();
         this.addressId= event.getAddressId();
-        this.userID = event.getUserID();
+        this.userId = event.getUserId();
         this.productId=event.getProductId();
         this.quantity=event.getQuantity();
+    }
+
+    @CommandHandler
+    public void handle (CompleteOrderCommand completeOrderCommand){
+        OrderCompletedEvent orderCompletedEvent = OrderCompletedEvent
+                .builder()
+                .orderId(completeOrderCommand.getOrderId())
+                .orderStatus(completeOrderCommand.getOrderStatus())
+                .build();
+        AggregateLifecycle.apply(orderCompletedEvent);
+    }
+
+    public void on (OrderCompletedEvent orderCompletedEvent){
+//        this.orderId = orderCompletedEvent.getOrderId();
+        this.orderStatus = orderCompletedEvent.getOrderStatus();
     }
 
 }

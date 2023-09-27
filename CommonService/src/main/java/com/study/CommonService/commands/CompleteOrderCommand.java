@@ -1,4 +1,4 @@
-package com.study.orderservice.command.commands;
+package com.study.CommonService.commands;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,12 +6,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @Builder
-public class CreateOrderCommand {
+public class CompleteOrderCommand {
+
     @TargetAggregateIdentifier
     private String orderId;
-    private String userId;
-    private String addressId;
-    private String productId;
-    private Integer quantity;
     private String orderStatus;
 }
