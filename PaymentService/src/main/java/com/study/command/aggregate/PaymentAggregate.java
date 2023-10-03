@@ -1,6 +1,8 @@
 package com.study.command.aggregate;
 
+import com.study.CommonService.commands.CancelPaymentCommand;
 import com.study.CommonService.commands.ValidatePaymentConmand;
+import com.study.CommonService.events.PaymentCancelEvent;
 import com.study.CommonService.events.PaymentProcessedEvent;
 import com.study.CommonService.models.CardDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.springframework.beans.BeanUtils;
 
 @Aggregate
 @Slf4j
@@ -42,5 +45,20 @@ public class PaymentAggregate {
         this.orderId = event.getOrderId();
         this.paymentId = event.getPaymentId();
         log.info("event sourcing handler");
+    }
+
+    @CommandHandler
+    public void handle (CancelPaymentCommand event){
+        log.info("Cancel or rollback payment id :" +  event.getPaymentId());
+        PaymentCancelEvent paymentCancelEvent = new PaymentCancelEvent();
+        BeanUtils.copyProperties(event,paymentCancelEvent);
+        AggregateLifecycle.apply(paymentCancelEvent);
+    }
+
+    @EventSourcingHandler
+    public void on (PaymentCancelEvent event){
+        this.orderId = event.getOrderId();
+        this.paymentId = event.getPaymentId();
+        this.paymentStatus = event.getPaymentStatus();
     }
 }
