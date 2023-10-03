@@ -1,5 +1,6 @@
 package com.study.command.events;
 
+import com.study.CommonService.events.PaymentCancelEvent;
 import com.study.CommonService.events.PaymentProcessedEvent;
 import com.study.command.entity.Payment;
 import com.study.command.entity.PaymentRepository;
@@ -30,6 +31,14 @@ public class EventHandler {
                 .timeStamp(new Date())
                 .paymentStatus("COMPLETED")
                 .build();
+        paymentRepository.save(payment);
+    }
+
+    @org.axonframework.eventhandling.EventHandler
+    public void on (PaymentCancelEvent event){
+        log.info("=========>Starting rollback payment id:" + event.getPaymentId());
+        Payment payment = paymentRepository.findById(event.getPaymentId()).get();
+        payment.setPaymentStatus(event.getPaymentStatus());
         paymentRepository.save(payment);
     }
 

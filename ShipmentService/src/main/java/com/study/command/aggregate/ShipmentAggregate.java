@@ -1,7 +1,7 @@
 package com.study.command.aggregate;
 
 import com.study.CommonService.commands.ShipOrderCommand;
-import com.study.CommonService.events.OrderShippedEvent;
+import com.study.CommonService.events.ShipmentCompletedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -20,18 +20,18 @@ public class ShipmentAggregate {
 
     @CommandHandler
     public ShipmentAggregate(ShipOrderCommand shipOrderCommand) {
-        OrderShippedEvent orderShippedEvent = OrderShippedEvent.builder()
+        ShipmentCompletedEvent shipmentCompletedEvent = ShipmentCompletedEvent.builder()
                 .orderId(shipOrderCommand.getOrderId())
                 .shipId(shipOrderCommand.getShipId())
                 .shipmentStatus("COMPLETED")
                 .build();
-        AggregateLifecycle.apply(orderShippedEvent);
+        AggregateLifecycle.apply(shipmentCompletedEvent);
     }
 
     @EventSourcingHandler
-    public void on (OrderShippedEvent orderShippedEvent){
-        this.orderId=orderShippedEvent.getOrderId();
-        this.shipId = orderShippedEvent.getShipId();
-        this.shipmentStatus = orderShippedEvent.getShipmentStatus();
+    public void on (ShipmentCompletedEvent shipmentCompletedEvent){
+        this.orderId= shipmentCompletedEvent.getOrderId();
+        this.shipId = shipmentCompletedEvent.getShipId();
+        this.shipmentStatus = shipmentCompletedEvent.getShipmentStatus();
     }
 }
