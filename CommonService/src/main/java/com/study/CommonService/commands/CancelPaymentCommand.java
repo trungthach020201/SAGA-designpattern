@@ -1,16 +1,13 @@
 package com.study.CommonService.commands;
 
-import com.study.CommonService.models.CardDetails;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@Builder
-@Data
-public class ValidatePaymentConmand {
-
+@Value
+public class CancelPaymentCommand {
     @TargetAggregateIdentifier
     private String paymentId;
     private String orderId;
-    private CardDetails cardDetails;
+    private String paymentStatus = "CANCELLED";
 }
