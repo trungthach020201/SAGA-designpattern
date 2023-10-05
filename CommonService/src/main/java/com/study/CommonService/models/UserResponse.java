@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class User {
+public class UserResponse {
 
     private String userId;
     private String firstName;
     private String lastName;
-    private CardDetails cardDetails;
+    private CardDetailsResponse cardDetailsResponse;
 }

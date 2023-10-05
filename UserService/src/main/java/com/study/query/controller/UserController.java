@@ -1,7 +1,8 @@
 package com.study.query.controller;
 
-import com.study.CommonService.models.User;
+
 import com.study.CommonService.queries.GetUserPaymentDetailQuery;
+import com.study.entity.User;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;

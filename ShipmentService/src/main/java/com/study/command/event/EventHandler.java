@@ -1,5 +1,6 @@
 package com.study.command.event;
 
+import com.study.CommonService.commands.CancelShipmentCommand;
 import com.study.CommonService.events.ShipmentCompletedEvent;
 import com.study.command.entity.Shipment;
 import com.study.command.entity.ShipmentRepository;
@@ -16,6 +17,13 @@ public class EventHandler {
     public void on (ShipmentCompletedEvent event){
         Shipment shipment = new Shipment();
         BeanUtils.copyProperties(event,shipment);
+        shipmentRepository.save(shipment);
+    }
+
+    @org.axonframework.eventhandling.EventHandler
+    public void on (CancelShipmentCommand cancelShipmentCommand){
+        Shipment shipment = shipmentRepository.findById(cancelShipmentCommand.getShipmentId()).get();
+        shipment.setShipmentStatus(cancelShipmentCommand.getShipmentStatus());
         shipmentRepository.save(shipment);
     }
 }

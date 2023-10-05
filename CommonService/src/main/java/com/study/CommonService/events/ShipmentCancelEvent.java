@@ -6,5 +6,6 @@ import lombok.Data;
 public class ShipmentCancelEvent {
     private String shipmentId;
     private String orderId;
+    private String paymentId;
     private String shipmentStatus;
 }
